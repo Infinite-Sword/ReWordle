@@ -101,7 +101,7 @@
     }
 
     body {
-      height: 80%;
+      height: 100%;
       background-color: var(--color-background);
       margin: 0;
       padding: 0;
@@ -110,13 +110,13 @@
     }
 
     input[type='number'] {
-      width: 75px;
-      padding: 5px 10px;
+      width: 3em;
+      padding: 0.4em 0.8em;
       border-radius: 8px;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 24px;
+      font-size: 1em;
     }
 
     .support_info {
@@ -131,25 +131,25 @@
       background-color: #5f27cd;
       border: none;
       color: #c8d6e5;
-      margin-top: 10px;
-      padding: 5px 10px;
-      border-radius: 8px;
+      margin-top: 1em;
+      margin-bottom: 1em;
+      padding: 0.4em 0.8em;
+      border-radius: 1em;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 24px;
+      font-size: 1em;
     }
 
     .button-red {
       background-color: #ff9f43;
       color: #c8d6e5;
-      font-size: 14px;
-      padding: 5px 10px;
+      font-size: 0.75em;
     }
 
     .center {
       margin: auto;
-      width: 50%;
+      width: 100%;
       text-align: center;
       border-radius: 5px;
     }
@@ -167,13 +167,11 @@
   <script src="./wordle_files/main.e65ce0a5.js.download"></script>
   <script src="./rewindle.js"></script>
   <div class="center">
-    <button class="button" onclick="offset_day()" name="date_offset_control">Rewind Wordle</button>
+    <button class="button" onclick="offset_day(true)" name="date_offset_control">Rewind Wordle</button>
     <span class="support_info">by</span>
-    <input type="number" id="day_rewind_count" value="1" min="1" maxlength="4"> <span class="support_info">Days</span>
-    <br /><br />
+    <input type="number" id="day_rewind_count" value="1" min="1" maxlength="4" onkeydown="offset_day()"> <span class="support_info">Days</span> &nbsp; <button class="button button-red" onclick="reset_all()" name="resetbutton">RESET ALL DATA</button>
+    <br />
     <span class="support_info">Accessing Wordle for:</span> <span class="chrono_date" id="current_chrono"></span>
-    <br /><br />
-    <button class="button button-red" onclick="reset_all()" name="resetbutton">RESET ALL DATA</button>
   </div>
   <game-app></game-app>
 </body>
