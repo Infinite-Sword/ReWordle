@@ -39,7 +39,7 @@ function check_game_state() {
 }
 
 function get_puzzle_count() {
-    return Math.round(Math.abs((new Date(2021, 5, 19) - new Date()) / 86400000));
+    return Math.round(Math.abs((new Date(2021, 5, 20) - new Date()) / 86400000));
 }
 
 function get_puzzle_offset(puzzle) {
@@ -102,6 +102,12 @@ function set_dark_theme() {
     var body = document.querySelector("body");
     if (localStorage.getItem("darkTheme") === "true") body.classList.add("nightmode");
     else body.classList.remove("nightmode");
+}
+
+function adjust_puzzle_number(n){
+    var adjusted_number = parseInt(document.getElementById("selected_puzzle").value) + parseInt(n);
+    document.getElementById("selected_puzzle").value = adjusted_number;
+    offset_day(true);
 }
 
 function load_custom_values() {
