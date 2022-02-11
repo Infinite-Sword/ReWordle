@@ -1,86 +1,77 @@
-/*
-Sat Jun 19 2021 ==> Wordle #0
-Sun Jun 20 2021 ==> Wordle #1
-Calculate the current puzzle day offset and use the Rewindle hook to offset the date
-*/
-
-function store_puzzle_game_state(puzzle_key){
+function store_puzzle_game_state(puzzle_key) {
     var all_states;
-    if (localStorage.getItem("AllGameStates") == null){
+    if (localStorage.getItem("AllGameStates") == null) {
         all_states = new Object();
         all_states[puzzle_key] = JSON.parse(localStorage.getItem("gameState"));
         localStorage.setItem("AllGameStates", JSON.stringify(all_states))
     }
-    else{
+    else {
         all_states = JSON.parse(localStorage.getItem("AllGameStates"));
         all_states[puzzle_key] = JSON.parse(localStorage.getItem("gameState"));
         localStorage.setItem("AllGameStates", JSON.stringify(all_states))
     }
 }
 
-function load_puzzle_game_state(puzzle_key){
+function load_puzzle_game_state(puzzle_key) {
     var all_states;
-    if (localStorage.getItem("AllGameStates") == null || puzzle_key == null ){
+    if (localStorage.getItem("AllGameStates") == null || puzzle_key == null) {
         return;
     }
-    else{
+    else {
         all_states = JSON.parse(localStorage.getItem("AllGameStates"));
         var stored_state = all_states[puzzle_key];
-        if (stored_state == null) return; 
+        if (stored_state == null) return;
         localStorage.setItem("gameState", JSON.stringify(stored_state));
     }
 }
 
-function check_game_state(){
+function check_game_state() {
     if (event.key !== 'Enter') return;
     var last_state = JSON.parse(localStorage.getItem("lastGameState"));
     var current_state = JSON.parse(localStorage.getItem("gameState"));
-    if (last_state != current_state){
+    if (last_state != current_state) {
         localStorage.setItem("lastGameState", JSON.stringify(current_state))
         var current_puzzle = localStorage.getItem("SelectedPuzzle");
-        if (current_puzzle != null){
+        if (current_puzzle != null) {
             store_puzzle_game_state(current_puzzle);
         }
-        
     }
-    
 }
 
-function get_puzzle_count(){
-    return Math.round(Math.abs((new Date(2021, 5, 20) - new Date()) / 86400000));
+function get_puzzle_count() {
+    return Math.round(Math.abs((new Date(2021, 5, 19) - new Date()) / 86400000));
 }
 
-function get_puzzle_offset(puzzle){
+function get_puzzle_offset(puzzle) {
     var puzzle_offset = get_puzzle_count() - puzzle;
     return puzzle_offset
 }
 
-function set_date_offset(puzzle){
+function set_date_offset(puzzle) {
     localStorage.setItem("DateOffset", get_puzzle_offset(puzzle))
 }
 
-function default_puzzle(){
+function default_puzzle() {
     return get_puzzle_count() - 1;
 }
 
 function clear_local_storage() {
     var dark_theme = localStorage.getItem("darkTheme") === "true" ? true : false;
     var date_offset = localStorage.getItem("DateOffset") == null ? get_puzzle_offset(default_puzzle()) : localStorage.getItem("DateOffset");
-    var selected_puzzle = localStorage.getItem("SelectedPuzzle") == null ? default_puzzle() : localStorage.getItem("SelectedPuzzle") ;
+    var selected_puzzle = localStorage.getItem("SelectedPuzzle") == null ? default_puzzle() : localStorage.getItem("SelectedPuzzle");
     var statistics = JSON.parse(localStorage.getItem("statistics"));
-    var all_states = JSON.parse(localStorage.getItem("AllGameStates")) ;
+    var all_states = JSON.parse(localStorage.getItem("AllGameStates"));
     localStorage.clear();
     localStorage.setItem("SelectedPuzzle", selected_puzzle);
     localStorage.setItem("DateOffset", date_offset);
     localStorage.setItem("darkTheme", JSON.stringify(dark_theme));
-    localStorage.setItem("statistics",  JSON.stringify(statistics));
-    localStorage.setItem("AllGameStates",  JSON.stringify(all_states));
+    if (statistics != null) localStorage.setItem("statistics", JSON.stringify(statistics));
+    if (all_states != null) localStorage.setItem("AllGameStates", JSON.stringify(all_states));
 }
 
 function reset_all() {
-    if (window.confirm("Are you sure? Current progress will be reset.")) {
-        clear_local_storage();
-        localStorage.setItem("SelectedPuzzle", default_puzzle());
+    if (window.confirm("Are you sure? WARNING: COMPLETION FOR ALL PUZZLES WILL BE RESET !") && window.confirm("Are you REALLY sure???")) {
+        localStorage.clear();
         location.reload();
     }
 }
@@ -88,16 +79,12 @@ function reset_all() {
 function offset_day(keypress_override = false) {
     if (JSON.parse(localStorage.gameState).boardState[0] === "" && document.getElementById("selected_puzzle").value === localStorage.getItem("SelectedPuzzle")) return;
     if (!keypress_override && event.key !== 'Enter') return;
-    if (JSON.parse(localStorage.gameState).boardState[0] !== "" && document.getElementById("selected_puzzle").value === localStorage.getItem("SelectedPuzzle") && window.confirm("Are you sure? Current puzzle progress will be reset.")){
+    if (JSON.parse(localStorage.gameState).boardState[0] !== "" && document.getElementById("selected_puzzle").value === localStorage.getItem("SelectedPuzzle") && window.confirm("Are you sure? Current puzzle progress will be reset.")) {
         var all_states = JSON.parse(localStorage.getItem("AllGameStates"));
-        var x = parseInt(localStorage.getItem("SelectedPuzzle"))
-        delete all_states[x];
-        localStorage.setItem("AllGameStates",  JSON.stringify(all_states));
-        
+        delete all_states[parseInt(localStorage.getItem("SelectedPuzzle"))];
+        localStorage.setItem("AllGameStates", JSON.stringify(all_states));
     }
-    else {
-        store_puzzle_game_state(localStorage.getItem("SelectedPuzzle"));
-    }
+    else store_puzzle_game_state(localStorage.getItem("SelectedPuzzle"));
     clear_local_storage();
     localStorage.setItem("SelectedPuzzle", document.getElementById("selected_puzzle").value >= get_puzzle_count() ? default_puzzle() : document.getElementById("selected_puzzle").value);
     set_date_offset(localStorage.getItem("SelectedPuzzle"));
@@ -119,17 +106,15 @@ function set_dark_theme() {
 
 function load_custom_values() {
     let gameStateOverride = sessionStorage.getItem('gameStateOverride');
-    if (!gameStateOverride){
+    if (!gameStateOverride) {
         load_puzzle_game_state(localStorage.getItem("SelectedPuzzle"));
         sessionStorage.setItem('gameStateOverride', true);
         location.reload();
     }
-    if (localStorage.getItem("DateOffset") == null || localStorage.getItem("DateOffset") <= 0)
-    {
+    if (localStorage.getItem("DateOffset") == null || localStorage.getItem("DateOffset") <= 0) {
         localStorage.setItem("DateOffset", 1);
         let initialLoad = sessionStorage.getItem('initialLoadComplete');
-        if (!initialLoad)
-        {
+        if (!initialLoad) {
             sessionStorage.setItem('initialLoadComplete', true);
             location.reload();
         }
@@ -139,5 +124,4 @@ function load_custom_values() {
     set_date_offset(localStorage.getItem("SelectedPuzzle"));
     current_day_setting();
     set_dark_theme();
-    
 }
