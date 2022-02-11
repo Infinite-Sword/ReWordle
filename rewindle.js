@@ -70,7 +70,7 @@ function clear_local_storage() {
 }
 
 function reset_all() {
-    if (window.confirm("Are you sure? WARNING: COMPLETION FOR ALL PUZZLES WILL BE RESET !") && window.confirm("Are you REALLY sure???")) {
+    if (window.confirm("WARNING: Completion and Statistics for ALL PUZZLES will be reset!! Are you sure?") && window.confirm("Are you REALLY sure???")) {
         localStorage.clear();
         location.reload();
     }
@@ -118,6 +118,10 @@ function load_custom_values() {
             sessionStorage.setItem('initialLoadComplete', true);
             location.reload();
         }
+    }
+    if (localStorage.getItem("ForceResetStorage") === 'true'){
+        reset_all();
+        localStorage.removeItem("ForceResetStorage");
     }
     if (localStorage.getItem("SelectedPuzzle") == null || localStorage.getItem("SelectedPuzzle") >= get_puzzle_count()) localStorage.setItem("SelectedPuzzle", default_puzzle());
     document.getElementById("selected_puzzle").value = localStorage.getItem("SelectedPuzzle");
