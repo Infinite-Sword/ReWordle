@@ -34,7 +34,16 @@ function set_dark_theme() {
 }
 
 function load_custom_values() {
-    if (localStorage.getItem("DateOffset") == null || localStorage.getItem("DateOffset") <= 0) localStorage.setItem("DateOffset", 1);
+    if (localStorage.getItem("DateOffset") == null || localStorage.getItem("DateOffset") <= 0)
+    {
+        localStorage.setItem("DateOffset", 1);
+        let initialLoad = sessionStorage.getItem('initialLoadComplete');
+        if (!initialLoad)
+        {
+            sessionStorage.setItem('initialLoadComplete', true);
+            location.reload();
+        }
+    }
     document.getElementById("day_rewind_count").value = localStorage.getItem("DateOffset");
     current_day_setting();
     set_dark_theme();
