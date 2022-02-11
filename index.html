@@ -5,7 +5,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Rewindle - A time-travelling word game</title>
+  <title>ReWordle - Play past Wordle Puzzles!</title>
   <meta name="theme-color" content="#6aaa64">
   <style>
     /* Global Styles & Colors */
@@ -156,7 +156,7 @@
   </style>
 </head>
 
-<body class="nightmode" data-new-gr-c-s-check-loaded="14.1047.0" data-gr-ext-installed="" onload="load_custom_values()">
+<body class="nightmode" data-new-gr-c-s-check-loaded="14.1047.0" data-gr-ext-installed="" onload="load_custom_values()" onkeypress="check_game_state()">
   <script>
     (function () {
       // Defining the hash before the main bundle allows the bundle access window.hash
@@ -164,14 +164,11 @@
       window.wordle.hash = 'e65ce0a5';
     })();
   </script>
-  <script src="./wordle_files/main.e65ce0a5.js.download"></script>
+  <script src="./wordle_files/main.e65ce0a5.js"></script>
   <script src="./rewindle.js"></script>
   <div class="center">
-    <button class="button" onclick="offset_day(true)" name="date_offset_control">Rewind Wordle</button>
-    <span class="support_info">by</span>
-    <input type="number" id="day_rewind_count" value="1" min="1" maxlength="4" onkeydown="offset_day()">
-    <span class="support_info">Days</span> &nbsp;
-    <button class="button button-red" onclick="reset_all()" name="resetbutton">RESET ALL DATA</button>
+    <button class="button" onclick="offset_day(true)" name="date_offset_control">Play Wordle #</button>
+    <input type="number" id="selected_puzzle" min="0" maxlength="4" onkeydown="offset_day()">
     <br />
     <span class="support_info">Accessing Wordle for:</span> <span class="chrono_date" id="current_chrono"></span>
   </div>
