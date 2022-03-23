@@ -1,4 +1,4 @@
-# [Click Here to Play Rewindle](https://swordfisherl42.github.io/Rewindle/)
+# [Click Here to Play ReWordle](https://infinite-sword.github.io/ReWordle/)
 
 ## Description
-This project adds controls for selecting and playing any previous "Wordle".
+This project adds wrapper controls for selecting any previous "Wordle" puzzle from [https://www.powerlanguage.co.uk/wordle/](https://www.powerlanguage.co.uk/wordle/)

@@ -5,7 +5,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Rewindle - A time-travelling word game</title>
+  <title>ReWordle - Play past Wordle Puzzles!</title>
   <meta name="theme-color" content="#6aaa64">
   <style>
     /* Global Styles & Colors */
@@ -24,8 +24,8 @@
       --blue: #85c0f9;
       font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
       font-size: 16px;
-      --header-height: 100px;
-      --keyboard-height: 200px;
+      --header-height: 50px;
+      --keyboard-height: 250px;
       --game-max-width: 500px;
     }
 
@@ -102,6 +102,7 @@
 
     body {
       height: 100%;
+      max-height: 100%;
       background-color: var(--color-background);
       margin: 0;
       padding: 0;
@@ -109,17 +110,30 @@
       overflow-y: hidden;
     }
 
+    .control-input{
+      position: relative;
+      display: inline-flex;
+      flex: 0 0 auto;
+      flex-direction: row;
+      justify-content: center;
+      align-self: center;
+      padding: 0 1.25rem;
+      line-height: 2.125rem;
+      font-size: .875rem;
+      font-weight: 400;
+      text-align: center;
+      margin: .2rem;
+      border-radius: 0.2em;
+    }
+
     input[type='number'] {
       width: 3em;
-      padding: 0.4em 0.8em;
-      border-radius: 8px;
-      text-align: center;
       text-decoration: none;
-      display: inline-block;
-      font-size: 1em;
+      border: none
     }
 
     .support_info {
+      margin: -0.5rem;
       color: #8395a7;
     }
 
@@ -127,18 +141,15 @@
       color: #f368e0;
     }
 
-    .button {
-      background-color: #5f27cd;
+    .button {      
+      background-color: #40739e;
       border: none;
       color: #c8d6e5;
-      margin-top: 1em;
-      margin-bottom: 1em;
-      padding: 0.4em 0.8em;
-      border-radius: 1em;
-      text-align: center;
       text-decoration: none;
-      display: inline-block;
-      font-size: 1em;
+    }
+
+    .button-adjust {
+      font-size: 1.5rem;
     }
 
     .button-red {
@@ -150,13 +161,18 @@
     .center {
       margin: auto;
       width: 100%;
+      max-width: var(--game-max-width);
+      max-height: 50px;
       text-align: center;
-      border-radius: 5px;
+      display:  flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
     }
   </style>
 </head>
 
-<body class="nightmode" data-new-gr-c-s-check-loaded="14.1047.0" data-gr-ext-installed="" onload="load_custom_values()">
+<body class="nightmode" data-new-gr-c-s-check-loaded="14.1047.0" data-gr-ext-installed="" onload="load_custom_values()" onkeypress="check_game_state()">
   <script>
     (function () {
       // Defining the hash before the main bundle allows the bundle access window.hash
@@ -164,16 +180,14 @@
       window.wordle.hash = 'e65ce0a5';
     })();
   </script>
-  <script src="./wordle_files/main.e65ce0a5.js.download"></script>
+  <script src="./wordle_files/main.e65ce0a5.js"></script>
   <script src="./rewindle.js"></script>
   <div class="center">
-    <button class="button" onclick="offset_day(true)" name="date_offset_control">Rewind Wordle</button>
-    <span class="support_info">by</span>
-    <input type="number" id="day_rewind_count" value="1" min="1" maxlength="4" onkeydown="offset_day()">
-    <span class="support_info">Days</span> &nbsp;
-    <button class="button button-red" onclick="reset_all()" name="resetbutton">RESET ALL DATA</button>
-    <br />
-    <span class="support_info">Accessing Wordle for:</span> <span class="chrono_date" id="current_chrono"></span>
+    <button class="control-input button button-adjust" onclick="adjust_puzzle_number(-1)" name="puzzle_ctr_left">&laquo;</button>
+    <button class="control-input button" onclick="offset_day(true)" name="date_offset_control">Play Wordle #</button>
+    <input class="control-input" type="number" id="selected_puzzle" min="0" maxlength="4" onkeydown="offset_day()">
+    <button class="control-input button button-adjust" onclick="adjust_puzzle_number(1)" name="puzzle_ctr_right">&raquo;</button>
+    <span class="control-input support_info">Accessing Wordle for:</span> <span class="control-input support_info chrono_date" id="current_chrono"></span>
   </div>
   <game-app></game-app>
 </body>
